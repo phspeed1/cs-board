@@ -7,6 +7,7 @@ export interface IUser {
   nickname: string;
   last_login_at: Date | null;
   session_id: string | null;
+  created_at: Date;
 }
 
 export interface IPost {
@@ -19,7 +20,7 @@ export interface IPost {
 }
 
 export interface IPostWithAuthor extends IPost {
-  author_nickname: string;
+  author_nickname: string | null;
 }
 
 export interface IPaginationParams {
