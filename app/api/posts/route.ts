@@ -81,17 +81,26 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // 게시글 저장
-    await db.insert(posts).values({
-      title,
-      content,
-      author_id: currentUser.id,
-      view_count: 0,
-      created_at: new Date(),
-    });
+    // 게시글 저장 및 삽입된 게시글 정보 반환
+    const result = await db.insert(posts)
+      .values({
+        title,
+        content,
+        author_id: currentUser.id,
+        view_count: 0,
+        created_at: new Date(),
+      })
+      .returning();
+    
+    // 삽입된 게시글 정보
+    const newPost = result[0];
     
     return NextResponse.json(
-      { message: "게시글이 작성되었습니다.", success: true },
+      { 
+        message: "게시글이 작성되었습니다.", 
+        success: true,
+        post: newPost
+      },
       { status: 201 }
     );
   } catch (error) {

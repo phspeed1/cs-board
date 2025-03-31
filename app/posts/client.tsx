@@ -69,11 +69,11 @@ function PostListClient() {
         }
 
         const response = await res.json();
-        console.log("API 응답 데이터:", response);
+        // console.log("API 응답 데이터:", response);
         
         // 데이터 구조 확인 및 안전한 할당 (data.posts 대신 data.data 사용)
         if (response && response.data) {
-          console.log("게시글 데이터:", response.data);
+          // console.log("게시글 데이터:", response.data);
           
           // 날짜 형식 변환을 추가하여 Date 객체로 변환
           const formattedPosts = response.data.map((post: IPostResponse) => ({
