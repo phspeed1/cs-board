@@ -136,7 +136,7 @@ function PostListClient() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">게시판</h1>
         <Link href="/posts/write">
-          <Button className="transition-all hover:translate-y-[-2px]">
+          <Button variant="outline" className="transition-all hover:translate-y-[-2px]">
             게시글 작성
           </Button>
         </Link>
@@ -228,7 +228,7 @@ function PostListClient() {
                   onClick={() => goToPage(pageNum)}
                   className={`min-w-[40px] ${
                     pagination.page === pageNum 
-                      ? "bg-[var(--primary)] text-white" 
+                      ? "bg-[var(--primary)] text-gray-400" 
                       : "text-[var(--foreground)] bg-white hover:bg-gray-100"
                   }`}
                 >
