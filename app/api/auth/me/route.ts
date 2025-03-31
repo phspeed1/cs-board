@@ -6,10 +6,7 @@ export async function GET(request: NextRequest) {
     const user = await getCurrentUser();
     
     if (!user) {
-      return NextResponse.json(
-        { message: "로그인되어 있지 않습니다." },
-        { status: 401 }
-      );
+      return NextResponse.json({ user: null, isLoggedIn: false }, { status: 200 });
     }
     
     // 민감한 정보 제거
