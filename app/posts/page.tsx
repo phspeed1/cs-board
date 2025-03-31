@@ -146,7 +146,7 @@ export default function PostList() {
                     </td>
                     <td className="py-3 px-4">{post.author_nickname}</td>
                     <td className="py-3 px-4 text-[var(--muted-text)] text-sm">
-                      {formatDate(post.created_at)}
+                      {formatDate(post.created_at.toString())}
                     </td>
                     <td className="py-3 px-4">{post.view_count}</td>
                   </tr>
@@ -202,7 +202,7 @@ export default function PostList() {
                     onClick={() => handlePageChange(pageNum)}
                     className={`min-w-[40px] ${
                       pagination.page === pageNum 
-                        ? "bg-[var(--primary)]" 
+                        ? "bg-[var(--primary)] text-gray-400"
                         : "hover:bg-gray-100"
                     }`}
                   >

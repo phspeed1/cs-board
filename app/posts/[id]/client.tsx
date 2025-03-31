@@ -69,7 +69,7 @@ export default function PostDetailClient({ post, isAuthor }: { post: IPostWithAu
           {isAuthor && (
             <div className="space-x-2">
               <Link href={`/posts/${post.id}/edit`}>
-                <Button className="transition-all hover:translate-y-[-2px]">
+                <Button variant="bordered" className="transition-all hover:translate-y-[-2px]">
                   수정
                 </Button>
               </Link>

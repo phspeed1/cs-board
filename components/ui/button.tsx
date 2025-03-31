@@ -11,6 +11,7 @@ const buttonVariants = cva(
       variant: {
         default: "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] hover:bg-[var(--primary-hover)]",
         outline: "bg-[var(--btn-secondary-bg)] text-[var(--btn-secondary-text)] border border-[var(--btn-secondary-border)] hover:bg-[var(--primary)] hover:text-white",
+        bordered: "bg-[var(--btn-primary-bg)] text-gray-500 border border-[var(--primary)] hover:bg-[var(--primary-hover)]",
         secondary: "bg-[var(--secondary)] text-white hover:bg-[var(--secondary-hover)]",
         destructive: "bg-[var(--destructive)] text-white hover:bg-[var(--destructive)]/90",
         ghost: "hover:bg-[var(--background)] hover:text-[var(--foreground)]",

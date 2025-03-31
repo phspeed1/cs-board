@@ -108,7 +108,7 @@ export default function EditPostClient({ post }: EditPostClientProps) {
           >
             취소
           </Button>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" variant="bordered" disabled={isSubmitting} className="hover:translate-y-[-2px] transition-all">
             {isSubmitting ? "저장 중..." : "저장"}
           </Button>
         </div>
