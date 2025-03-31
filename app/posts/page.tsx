@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { IPostWithAuthor, IPaginatedResponse } from "@/types";
+import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import { formatDate } from "@/utils/date";
 
 export default function PostList() {
   const router = useRouter();
@@ -94,98 +96,94 @@ export default function PostList() {
   };
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 py-8 animate-fadeIn">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">게시판</h1>
-        <Button onClick={handleWritePost}>
-          글 작성
-        </Button>
+        <Link href="/posts/write">
+          <Button className="transition-all hover:translate-y-[-2px]">
+            게시글 작성
+          </Button>
+        </Link>
       </div>
-      
-      {error && (
-        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
-          {error}
-        </div>
-      )}
-      
-      {isLoading ? (
-        <div className="flex justify-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-        </div>
-      ) : posts.length === 0 ? (
-        <div className="text-center py-12 text-gray-500">
-          등록된 게시글이 없습니다.
-        </div>
-      ) : (
-        <>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    번호
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    제목
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    작성자
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    작성일
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    조회수
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {posts.map((post, index) => (
-                  <tr key={post.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {pagination.total - (pagination.page - 1) * pagination.pageSize - index}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+
+      <Card>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-[var(--primary)] text-white">
+                <th className="py-3 px-4 text-left w-16">번호</th>
+                <th className="py-3 px-4 text-left">제목</th>
+                <th className="py-3 px-4 text-left w-32">작성자</th>
+                <th className="py-3 px-4 text-left w-40">작성일</th>
+                <th className="py-3 px-4 text-left w-24">조회수</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isLoading ? (
+                Array(10).fill(0).map((_, i) => (
+                  <tr key={i} className="border-b border-gray-200 loading">
+                    <td className="py-3 px-4 bg-gray-100 h-12"></td>
+                    <td className="py-3 px-4 bg-gray-100 h-12"></td>
+                    <td className="py-3 px-4 bg-gray-100 h-12"></td>
+                    <td className="py-3 px-4 bg-gray-100 h-12"></td>
+                    <td className="py-3 px-4 bg-gray-100 h-12"></td>
+                  </tr>
+                ))
+              ) : posts.length > 0 ? (
+                posts.map((post, index) => (
+                  <tr 
+                    key={post.id} 
+                    className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                  >
+                    <td className="py-3 px-4">{pagination.total - (pagination.page - 1) * pagination.pageSize - index}</td>
+                    <td className="py-3 px-4">
                       <Link 
                         href={`/posts/${post.id}`}
-                        className="text-indigo-600 hover:text-indigo-900"
+                        className="text-[var(--primary)] hover:underline font-medium"
                       >
                         {post.title}
                       </Link>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {post.author_nickname}
+                    <td className="py-3 px-4">{post.author_nickname}</td>
+                    <td className="py-3 px-4 text-[var(--muted-text)] text-sm">
+                      {formatDate(post.created_at)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {formatDate(post.created_at.toString())}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {post.view_count}
-                    </td>
+                    <td className="py-3 px-4">{post.view_count}</td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
-          {/* 페이지네이션 */}
-          <div className="flex justify-center mt-8">
-            <nav className="inline-flex rounded-md shadow-sm">
-              <button
-                onClick={() => handlePageChange(1)}
-                disabled={pagination.page === 1}
-                className="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-              >
-                처음
-              </button>
-              <button
-                onClick={() => handlePageChange(pagination.page - 1)}
-                disabled={pagination.page === 1}
-                className="px-3 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-              >
-                이전
-              </button>
-              
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="py-8 text-center text-[var(--muted-text)]">
+                    게시글이 없습니다.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        
+        <CardFooter className="flex justify-center pt-4 pb-2">
+          <div className="flex items-center space-x-2">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => handlePageChange(1)}
+              disabled={pagination.page === 1}
+              className="transition-all hover:translate-x-[-2px]"
+            >
+              처음
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => handlePageChange(pagination.page - 1)}
+              disabled={pagination.page === 1}
+              className="transition-all hover:translate-x-[-2px]"
+            >
+              이전
+            </Button>
+            
+            <div className="flex space-x-1">
               {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
                 // 현재 페이지를 중심으로 앞뒤로 2개씩 표시
                 const pageNumbers = [];
@@ -197,38 +195,44 @@ export default function PostList() {
                 }
                 
                 return pageNumbers.map(pageNum => (
-                  <button
+                  <Button
                     key={pageNum}
+                    variant={pagination.page === pageNum ? "default" : "outline"}
+                    size="sm"
                     onClick={() => handlePageChange(pageNum)}
-                    className={`px-3 py-2 border border-gray-300 text-sm font-medium ${
-                      pageNum === pagination.page
-                        ? "bg-indigo-50 text-indigo-600"
-                        : "bg-white text-gray-500 hover:bg-gray-50"
+                    className={`min-w-[40px] ${
+                      pagination.page === pageNum 
+                        ? "bg-[var(--primary)]" 
+                        : "hover:bg-gray-100"
                     }`}
                   >
                     {pageNum}
-                  </button>
+                  </Button>
                 ));
               })}
-              
-              <button
-                onClick={() => handlePageChange(pagination.page + 1)}
-                disabled={pagination.page === pagination.totalPages}
-                className="px-3 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-              >
-                다음
-              </button>
-              <button
-                onClick={() => handlePageChange(pagination.totalPages)}
-                disabled={pagination.page === pagination.totalPages}
-                className="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-              >
-                마지막
-              </button>
-            </nav>
+            </div>
+            
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => handlePageChange(pagination.page + 1)}
+              disabled={pagination.page === pagination.totalPages}
+              className="transition-all hover:translate-x-[2px]"
+            >
+              다음
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => handlePageChange(pagination.totalPages)}
+              disabled={pagination.page === pagination.totalPages}
+              className="transition-all hover:translate-x-[2px]"
+            >
+              마지막
+            </Button>
           </div>
-        </>
-      )}
+        </CardFooter>
+      </Card>
     </div>
   );
 } 

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { IUser } from "@/types";
+import { Button } from "@/components/ui/button";
 
 export default function Header() {
   const [user, setUser] = useState<Partial<IUser> | null>(null);
@@ -57,51 +58,49 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="text-xl font-bold text-gray-900">
-              CS-Board
-            </Link>
-          </div>
-          
-          <nav className="hidden md:flex space-x-10">
-            <Link href="/posts" className="text-gray-500 hover:text-gray-900">
-              게시판
-            </Link>
-          </nav>
-          
-          <div className="flex items-center">
-            {isLoading ? (
-              <div className="h-8 w-24 bg-gray-200 animate-pulse rounded"></div>
-            ) : user ? (
-              <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-700">{user.nickname}님</span>
-                <button
-                  onClick={handleLogout}
-                  className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
-                >
+    <header className="bg-[var(--primary)] text-white py-6">
+      <div className="container mx-auto px-4 flex justify-between items-center">
+        <Link href="/" className="text-2xl font-bold">
+          CS-Board
+        </Link>
+        
+        <nav className="hidden md:flex space-x-8">
+          <Link href="/posts" className="hover:text-gray-300 transition-colors">
+            게시판
+          </Link>
+          <Link href="/about" className="hover:text-gray-300 transition-colors">
+            소개
+          </Link>
+        </nav>
+        
+        <div className="flex items-center space-x-4">
+          {isLoading ? (
+            <div className="h-8 w-24 bg-gray-200 animate-pulse rounded"></div>
+          ) : user ? (
+            <div className="flex items-center space-x-4">
+              <span className="text-sm hidden md:inline-block">
+                {user.nickname}님 환영합니다
+              </span>
+              <Link href="/logout">
+                <Button variant="outline" className="text-white border-white hover:bg-white hover:text-[var(--primary)]">
                   로그아웃
-                </button>
-              </div>
-            ) : (
-              <div className="flex space-x-4">
-                <Link
-                  href="/login"
-                  className="text-sm font-medium text-gray-700 hover:text-gray-900"
-                >
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <Link href="/login">
+                <Button variant="outline" className="text-white border-white hover:bg-white hover:text-[var(--primary)]">
                   로그인
-                </Link>
-                <Link
-                  href="/register"
-                  className="ml-8 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
-                >
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button className="bg-white text-[var(--primary)] hover:bg-gray-100">
                   회원가입
-                </Link>
-              </div>
-            )}
-          </div>
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </header>

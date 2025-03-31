@@ -4,6 +4,8 @@ import { IPostWithAuthor } from "@/types";
 import { formatDate } from "@/utils/date";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import { EyeIcon, CalendarIcon, UserIcon } from "lucide-react";
 
 export default function PostDetailClient({ post, isAuthor }: { post: IPostWithAuthor; isAuthor: boolean }) {
   const handleDelete = async () => {
@@ -29,41 +31,59 @@ export default function PostDetailClient({ post, isAuthor }: { post: IPostWithAu
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-        <div className="flex justify-between items-center text-gray-600 mb-4">
-          <div>
-            <span>작성자: {post.author_nickname}</span>
-            <span className="mx-4">|</span>
-            <time dateTime={post.created_at.toISOString()}>
-              {formatDate(post.created_at)}
-            </time>
+    <div className="container mx-auto px-4 py-8 animate-fadeIn">
+      <Card className="overflow-hidden">
+        <CardHeader className="bg-gray-50 pb-4 border-b">
+          <h1 className="text-2xl font-bold mb-4">{post.title}</h1>
+          <div className="flex flex-wrap justify-between items-center text-[var(--muted-text)] text-sm">
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center">
+                <UserIcon className="w-4 h-4 mr-1" />
+                <span>{post.author_nickname}</span>
+              </div>
+              <div className="flex items-center">
+                <CalendarIcon className="w-4 h-4 mr-1" />
+                <time dateTime={post.created_at.toISOString()}>
+                  {formatDate(post.created_at)}
+                </time>
+              </div>
+            </div>
+            <div className="flex items-center mt-2 md:mt-0">
+              <EyeIcon className="w-4 h-4 mr-1" />
+              <span>조회수 {post.view_count}</span>
+            </div>
           </div>
-          <div>조회수: {post.view_count}</div>
-        </div>
-      </div>
+        </CardHeader>
 
-      <div className="prose max-w-none mb-8 min-h-[200px]">
-        {post.content}
-      </div>
+        <CardContent className="py-6 min-h-[300px] whitespace-pre-wrap">
+          {post.content}
+        </CardContent>
 
-      <div className="flex justify-between items-center">
-        <Link href="/posts">
-          <Button variant="outline">목록으로</Button>
-        </Link>
-
-        {isAuthor && (
-          <div className="space-x-2">
-            <Link href={`/posts/${post.id}/edit`}>
-              <Button variant="outline">수정</Button>
-            </Link>
-            <Button variant="destructive" onClick={handleDelete}>
-              삭제
+        <CardFooter className="flex justify-between pt-4 border-t">
+          <Link href="/posts">
+            <Button variant="outline" className="transition-all hover:translate-x-[-2px]">
+              목록으로
             </Button>
-          </div>
-        )}
-      </div>
+          </Link>
+
+          {isAuthor && (
+            <div className="space-x-2">
+              <Link href={`/posts/${post.id}/edit`}>
+                <Button className="transition-all hover:translate-y-[-2px]">
+                  수정
+                </Button>
+              </Link>
+              <Button 
+                variant="destructive" 
+                onClick={handleDelete}
+                className="transition-all hover:scale-105"
+              >
+                삭제
+              </Button>
+            </div>
+          )}
+        </CardFooter>
+      </Card>
     </div>
   );
 } 
