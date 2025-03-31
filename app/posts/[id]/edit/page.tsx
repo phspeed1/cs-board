@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 import EditPostClient from "./client";
 
 interface EditPostProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function EditPost({ params }: EditPostProps) {

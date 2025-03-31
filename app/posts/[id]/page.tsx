@@ -7,9 +7,9 @@ import { getCurrentUser } from "@/utils/auth";
 import PostDetailClient from "./client";
 
 interface PostPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // 서버 컴포넌트

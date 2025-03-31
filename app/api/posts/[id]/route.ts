@@ -6,11 +6,10 @@ import { NextRequest, NextResponse } from "next/server";
 // 특정 게시글 조회
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // 파라미터 비동기 처리
-    const { id: postId } = await context.params;
+    const { id: postId } = await params;
     
     // 게시글 조회 (작성자 닉네임 포함)
     const postWithAuthor = await db
@@ -53,11 +52,10 @@ export async function GET(
 // 게시글 수정
 export async function PUT(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // 파라미터 비동기 처리
-    const { id: postId } = await context.params;
+    const { id: postId } = await params;
     const currentUser = await getCurrentUser();
     
     if (!currentUser) {
@@ -113,11 +111,10 @@ export async function PUT(
 // 게시글 삭제
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // 파라미터 비동기 처리
-    const { id: postId } = await context.params;
+    const { id: postId } = await params;
     const currentUser = await getCurrentUser();
     
     if (!currentUser) {
@@ -164,11 +161,10 @@ export async function DELETE(
 
 export async function PATCH(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // 파라미터 비동기 처리
-    const { id: postId } = await context.params;
+    const { id: postId } = await params;
     const currentUser = await getCurrentUser();
     
     if (!currentUser) {

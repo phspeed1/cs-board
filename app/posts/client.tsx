@@ -26,6 +26,17 @@ interface IPost {
   created_at: Date;
 }
 
+// API 응답에서 사용되는 게시글 타입 정의 (날짜가 문자열 형태)
+interface IPostResponse {
+  id: string;
+  title: string;
+  content: string;
+  author_id: string;
+  author_nickname: string;
+  view_count: number;
+  created_at: string; // API에서는 문자열로 반환됨
+}
+
 // 클라이언트 컴포넌트
 function PostListClient() {
   const router = useRouter();
@@ -65,7 +76,7 @@ function PostListClient() {
           console.log("게시글 데이터:", response.data);
           
           // 날짜 형식 변환을 추가하여 Date 객체로 변환
-          const formattedPosts = response.data.map(post => ({
+          const formattedPosts = response.data.map((post: IPostResponse) => ({
             ...post,
             created_at: post.created_at ? new Date(post.created_at) : new Date()
           }));
